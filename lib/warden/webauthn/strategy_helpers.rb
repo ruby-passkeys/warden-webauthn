@@ -7,7 +7,7 @@ module Warden
 
       def verify_authentication_and_find_stored_credential
         begin
-          webauthn_credential, stored_credential = relying_party.verify_authentication(
+          _ , stored_credential = relying_party.verify_authentication(
             parsed_credential, authentication_challenge, user_verification: true
           ) do |webauthn_credential|
             credential_finder.find_with_credential_id(Base64.strict_encode64(webauthn_credential.raw_id))
@@ -80,7 +80,7 @@ module Warden
 
         begin
           return JSON.parse(raw_credential)
-        rescue JSON::JSONError => e
+        rescue JSON::JSONError
           errors.add(:credential, :json_error)
         end
       end
