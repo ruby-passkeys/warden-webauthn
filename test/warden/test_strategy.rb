@@ -161,7 +161,6 @@ class Warden::TestStrategy < Minitest::Test
     post(build_uri("/step1"))
     assert last_response.ok?
 
-    challenge_json = JSON.parse(last_response.body)
     assertion = assertion_from_client(client: authentication_app.client, challenge: encode_challenge, user_verified: true)
 
     post(build_uri("/step2"), {credential: JSON.generate(assertion) })
@@ -197,6 +196,40 @@ class Warden::TestStrategy < Minitest::Test
     assert_raises(NoMethodError) do
       post(build_uri("/step2"), {credential: JSON.generate(assertion) })
     end
+
+    get(build_uri("/"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/"}', last_response.body
+  end
+
+  def test_credential_missing
+    authentication_app.create_and_store_credential
+
+    post(build_uri("/step1"))
+    assert last_response.ok?
+
+    post(build_uri("/step2"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
+
+    get(build_uri("/"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/"}', last_response.body
+  end
+
+  def test_credential_cannot_be_parsed
+    authentication_app.create_and_store_credential
+
+    post(build_uri("/step1"))
+    assert last_response.ok?
+
+    post(build_uri("/step2"), {credential: "asdasdasd"})
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["json_error"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
 
     get(build_uri("/"))
 
