@@ -6,7 +6,7 @@ require_relative "webauthn/strategy"
 require_relative "webauthn/authentication_initiation_helpers"
 
 module Warden
-  module Webauthn
+  module WebAuthn
     class Error < StandardError; end
     # Your code goes here...
   end

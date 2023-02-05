@@ -1,5 +1,5 @@
 module Warden
-  module Webauthn
+  module WebAuthn
     VERSION: String
     # See the writing guide of rbs: https://github.com/ruby/rbs#guides
   end

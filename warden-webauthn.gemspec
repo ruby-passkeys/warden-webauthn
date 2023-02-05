@@ -4,7 +4,7 @@ require_relative "lib/warden/webauthn/version"
 
 Gem::Specification.new do |spec|
   spec.name = "warden-webauthn"
-  spec.version = Warden::Webauthn::VERSION
+  spec.version = Warden::WebAuthn::VERSION
   spec.authors = ["Thomas Cannon"]
   spec.email = ["tcannon00@gmail.com"]
 

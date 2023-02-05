@@ -2,9 +2,9 @@
 
 require "test_helper"
 
-class Warden::TestWebauthn < Minitest::Test
+class Warden::TestWebAuthn < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Warden::Webauthn::VERSION
+    refute_nil ::Warden::WebAuthn::VERSION
   end
 
   def test_it_does_something_useful
