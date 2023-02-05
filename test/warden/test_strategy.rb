@@ -134,4 +134,52 @@ class Warden::TestStrategy < Minitest::Test
     assert last_response.ok?
     assert_equal "OK: Tester", last_response.body
   end
+
+  def test_user_not_verified
+    authentication_app.create_and_store_credential
+
+    post(build_uri("/step1"))
+    assert last_response.ok?
+
+    challenge_json = JSON.parse(last_response.body)
+    assertion = assertion_from_client(client: authentication_app.client, challenge: challenge_json["challenge"], user_verified: false)
+
+    post(build_uri("/step2"), {credential: JSON.generate(assertion) })
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {} {:action=>"unauthenticated", :message=>:webauthn_user_verified_verification_error, :attempted_path=>"/step2"}', last_response.body
+
+    get(build_uri("/"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/"}', last_response.body
+  end
+
+  def test_bad_challenge
+    authentication_app.create_and_store_credential
+
+    post(build_uri("/step1"))
+    assert last_response.ok?
+
+    challenge_json = JSON.parse(last_response.body)
+    assertion = assertion_from_client(client: authentication_app.client, challenge: encode_challenge, user_verified: true)
+
+    post(build_uri("/step2"), {credential: JSON.generate(assertion) })
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {} {:action=>"unauthenticated", :message=>:webauthn_challenge_verification_error, :attempted_path=>"/step2"}', last_response.body
+
+    get(build_uri("/"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/"}', last_response.body
+  end
+
+  def test_already_authenticated
+    login_as "Tester"
+    get(build_uri("/"))
+
+    assert last_response.ok?
+    assert_equal "OK: Tester", last_response.body
+  end
 end
