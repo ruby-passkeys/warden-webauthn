@@ -72,7 +72,7 @@ class Warden::TestStrategy < Minitest::Test
 
 
       def find_with_credential_id(encoded_credential_id)
-        if encoded_credential_id == self.expected_stored_credential.external_id
+        if encoded_credential_id == self.expected_stored_credential&.external_id
           return expected_stored_credential
         else
           return nil
@@ -193,9 +193,10 @@ class Warden::TestStrategy < Minitest::Test
 
     authentication_app.stored_credential = nil
 
-    assert_raises(NoMethodError) do
-      post(build_uri("/step2"), {credential: JSON.generate(assertion) })
-    end
+    post(build_uri("/step2"), {credential: JSON.generate(assertion) })
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"stored_credential":["not_found"]} {:action=>"unauthenticated", :message=>:stored_credential_not_found, :attempted_path=>"/step2"}', last_response.body
 
     get(build_uri("/"))
 

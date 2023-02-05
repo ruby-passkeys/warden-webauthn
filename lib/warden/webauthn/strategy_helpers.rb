@@ -4,27 +4,28 @@ require 'webauthn'
 module Warden
   module WebAuthn
     module StrategyHelpers
+      class NoStoredCredentialFound < StandardError; end
 
       def verify_authentication_and_find_stored_credential
         begin
           _ , stored_credential = relying_party.verify_authentication(
             parsed_credential, authentication_challenge, user_verification: true
           ) do |webauthn_credential|
-            credential_finder.find_with_credential_id(Base64.strict_encode64(webauthn_credential.raw_id))
-          end
-
-          delete_authentication_challenge
-
-          if stored_credential.nil?
-            errors.add(:stored_credential, :not_found)
-            fail!
-            return
+            x = credential_finder.find_with_credential_id(Base64.strict_encode64(webauthn_credential.raw_id))
+            raise NoStoredCredentialFound if x.nil?
+            x
           end
 
           return stored_credential
         rescue ::WebAuthn::Error => e
           fail!(webauthn_error_key(exception: e))
           return
+        rescue NoStoredCredentialFound
+          errors.add(:stored_credential, :not_found)
+          fail!(:stored_credential_not_found)
+          return
+        ensure
+          delete_authentication_challenge
         end
       end
 

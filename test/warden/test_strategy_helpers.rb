@@ -205,4 +205,29 @@ class Warden::TestStrategyHelpers < Minitest::Test
     assert_nil @test_class.verify_authentication_and_find_stored_credential
     assert_equal :webauthn_challenge_verification_error, @test_class.error_key
   end
+
+  def test_verify_authentication_and_find_stored_credential_no_stored_credential
+    relying_party = example_relying_party
+    client = fake_client
+    credential = create_credential(client: client, relying_party: relying_party)
+
+    stored_credential = OpenStruct.new(external_id: encode_challenge, public_key: "asdasdasasdasd")
+
+    raw_challenge = relying_party.options_for_authentication(user_verification: "required").challenge
+
+    assertion = assertion_from_client(client: client, challenge: raw_challenge, user_verified: true)
+
+    credential_finder = TestCredentialFinder.new
+    credential_finder.expected_stored_credential = stored_credential
+
+    @test_class.env['warden.webauthn.credential_finder'] = credential_finder
+    @test_class.env['warden.webauthn.relying_party'] = relying_party
+
+    @test_class.session["current_webauthn_authentication_challenge"] = raw_challenge
+
+    @test_class.params["credential"] = assertion.to_json
+
+    assert_nil @test_class.verify_authentication_and_find_stored_credential
+    assert_equal :stored_credential_not_found, @test_class.error_key
+  end
 end
