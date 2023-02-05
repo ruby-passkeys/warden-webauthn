@@ -1,9 +1,9 @@
 module Warden
   module WebAuthn
     module AuthenticationInitiationHelpers
-      def generate_authentication_options(relying_party:)
+      def generate_authentication_options(relying_party:, options: {})
         return relying_party.options_for_authentication(
-          user_verification: "required"
+          {user_verification: "required"}.merge(options)
         )
       end
 
