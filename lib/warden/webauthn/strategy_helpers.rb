@@ -29,25 +29,25 @@ module Warden
 
       def webauthn_error_key(exception:)
         case exception
-        when WebAuthn::AttestationStatement::FormatNotSupportedError
+        when ::WebAuthn::AttestationStatement::FormatNotSupportedError
           return :webauthn_attestation_statement_format_not_supported
-        when WebAuthn::PublicKey::UnsupportedAlgorithm
+        when ::WebAuthn::PublicKey::UnsupportedAlgorithm
           return :webauthn_public_key_unsupported_algorithm
-        when WebAuthn::AttestationStatement::UnsupportedAlgorithm
+        when ::WebAuthn::AttestationStatement::UnsupportedAlgorithm
           return :webauthn_attestation_statement_unsupported_algorithm
-        when WebAuthn::VerificationError
-          return :webauthn_verification_error
-        when WebAuthn::ClientDataMissingError
-          return :webauthn_client_data_missing
-        when WebAuthn::AuthenticatorDataFormatError
-          return :webauthn_authenticator_data_format
-        when WebAuthn::AttestedCredentialDataFormatError
-          return :webauthn_attested_credential_data_format
-        when WebAuthn::RootCertificateFinderNotSupportedError
-          return :webauthn_root_certificate_finder_not_supported
-        when WebAuthn::SignCountVerificationError
+        when ::WebAuthn::SignCountVerificationError
           return :webauthn_sign_count_verification_error
-        when WebAuthn::Error
+        when ::WebAuthn::VerificationError
+          return :webauthn_verification_error
+        when ::WebAuthn::ClientDataMissingError
+          return :webauthn_client_data_missing
+        when ::WebAuthn::AuthenticatorDataFormatError
+          return :webauthn_authenticator_data_format
+        when ::WebAuthn::AttestedCredentialDataFormatError
+          return :webauthn_attested_credential_data_format
+        when ::WebAuthn::RootCertificateFinderNotSupportedError
+          return :webauthn_root_certificate_finder_not_supported
+        when ::WebAuthn::Error
           return :webauthn_generic_error
         end
       end
