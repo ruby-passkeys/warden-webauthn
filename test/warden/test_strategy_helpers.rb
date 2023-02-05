@@ -139,10 +139,8 @@ class Warden::TestStrategyHelpers < Minitest::Test
     stored_credential = OpenStruct.new(external_id: Base64.strict_encode64(credential.id), public_key: relying_party.encoder.encode(credential.public_key))
 
     raw_challenge = relying_party.options_for_authentication(user_verification: "required").challenge
-    challenge = relying_party.encoder.encode(raw_challenge)
 
     assertion = assertion_from_client(client: client, challenge: raw_challenge, user_verified: true)
-    assertion_response = assertion_response(assertion: assertion)
 
     credential_finder = TestCredentialFinder.new
     credential_finder.expected_stored_credential = stored_credential
@@ -166,10 +164,8 @@ class Warden::TestStrategyHelpers < Minitest::Test
     stored_credential = OpenStruct.new(external_id: Base64.strict_encode64(credential.id), public_key: relying_party.encoder.encode(credential.public_key))
 
     raw_challenge = relying_party.options_for_authentication(user_verification: "required").challenge
-    challenge = relying_party.encoder.encode(raw_challenge)
 
     assertion = assertion_from_client(client: client, challenge: raw_challenge, user_verified: false)
-    assertion_response = assertion_response(assertion: assertion)
 
     credential_finder = TestCredentialFinder.new
     credential_finder.expected_stored_credential = stored_credential
@@ -193,10 +189,8 @@ class Warden::TestStrategyHelpers < Minitest::Test
     stored_credential = OpenStruct.new(external_id: Base64.strict_encode64(credential.id), public_key: relying_party.encoder.encode(credential.public_key))
 
     raw_challenge = relying_party.options_for_authentication(user_verification: "required").challenge
-    challenge = relying_party.encoder.encode(raw_challenge)
 
     assertion = assertion_from_client(client: client, challenge: encode_challenge, user_verified: true)
-    assertion_response = assertion_response(assertion: assertion)
 
     credential_finder = TestCredentialFinder.new
     credential_finder.expected_stored_credential = stored_credential
