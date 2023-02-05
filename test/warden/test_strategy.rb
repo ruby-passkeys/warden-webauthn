@@ -83,7 +83,7 @@ class Warden::TestStrategy < Minitest::Test
 
   def app
     Rack::Builder.new do
-      use Rack::Session::Cookie
+      use Rack::Session::Cookie, secret: "a" * 64
 
       failure_app = lambda do |env|
         debugger
