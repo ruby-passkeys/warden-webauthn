@@ -19,6 +19,7 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    docile (1.4.0)
     io-console (0.6.0)
     irb (1.6.2)
       reline (>= 0.3.0)
@@ -55,6 +56,12 @@ GEM
     ruby-progressbar (1.11.0)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     tpm-key_attestation (0.11.0)
       bindata (~> 2.4)
       openssl (> 2.0, < 3.1)
@@ -81,6 +88,7 @@ DEPENDENCIES
   rack-test
   rake (~> 13.0)
   rubocop (~> 1.21)
+  simplecov
   warden-webauthn!
 
 BUNDLED WITH
