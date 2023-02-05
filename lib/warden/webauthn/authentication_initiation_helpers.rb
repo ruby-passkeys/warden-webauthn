@@ -8,7 +8,7 @@ module Warden
       end
 
       def store_challenge_in_session(options_for_authentication:)
-        session[authentication_challenge_key] = options.challenge
+        session[authentication_challenge_key] = options_for_authentication.challenge
       end
 
       def authentication_challenge_key
