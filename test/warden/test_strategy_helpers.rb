@@ -154,6 +154,7 @@ class Warden::TestStrategyHelpers < Minitest::Test
 
     assert_equal stored_credential, @test_class.verify_authentication_and_find_stored_credential
     assert_nil @test_class.error_key
+    assert_nil @test_class.session["current_webauthn_authentication_challenge"]
   end
 
   def test_verify_authentication_and_find_stored_credential_user_not_verified
@@ -179,6 +180,7 @@ class Warden::TestStrategyHelpers < Minitest::Test
 
     assert_nil @test_class.verify_authentication_and_find_stored_credential
     assert_equal :webauthn_user_verified_verification_error, @test_class.error_key
+    assert_nil @test_class.session["current_webauthn_authentication_challenge"]
   end
 
   def test_verify_authentication_and_find_stored_credential_bad_challenge
@@ -204,6 +206,7 @@ class Warden::TestStrategyHelpers < Minitest::Test
 
     assert_nil @test_class.verify_authentication_and_find_stored_credential
     assert_equal :webauthn_challenge_verification_error, @test_class.error_key
+    assert_nil @test_class.session["current_webauthn_authentication_challenge"]
   end
 
   def test_verify_authentication_and_find_stored_credential_no_stored_credential
@@ -229,5 +232,6 @@ class Warden::TestStrategyHelpers < Minitest::Test
 
     assert_nil @test_class.verify_authentication_and_find_stored_credential
     assert_equal :stored_credential_not_found, @test_class.error_key
+    assert_nil @test_class.session["current_webauthn_authentication_challenge"]
   end
 end

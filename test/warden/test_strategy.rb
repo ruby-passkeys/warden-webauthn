@@ -128,6 +128,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert last_response.redirect?
     assert_equal "/", last_response.location
+    assert_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -148,6 +149,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {} {:action=>"unauthenticated", :message=>:webauthn_user_verified_verification_error, :attempted_path=>"/step2"}', last_response.body
+    assert_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -167,6 +169,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {} {:action=>"unauthenticated", :message=>:webauthn_challenge_verification_error, :attempted_path=>"/step2"}', last_response.body
+    assert_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -180,6 +183,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert last_response.ok?
     assert_equal "OK: Tester", last_response.body
+    assert_nil last_request.session["current_webauthn_authentication_challenge"]
   end
 
   def test_credential_removed
@@ -197,6 +201,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {"stored_credential":["not_found"]} {:action=>"unauthenticated", :message=>:stored_credential_not_found, :attempted_path=>"/step2"}', last_response.body
+    assert_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -214,6 +219,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
+    refute_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -231,6 +237,7 @@ class Warden::TestStrategy < Minitest::Test
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {"credential":["json_error"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
+    refute_nil last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
