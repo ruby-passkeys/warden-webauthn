@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'simplecov'
+Bundler.require(:test)
 SimpleCov.start do
   add_filter "/test/"
 end
