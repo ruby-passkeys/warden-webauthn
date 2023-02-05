@@ -2,6 +2,7 @@
 
 require_relative "webauthn/version"
 require_relative "webauthn/strategy_helpers"
+require_relative "webauthn/strategy"
 
 module Warden
   module Webauthn
