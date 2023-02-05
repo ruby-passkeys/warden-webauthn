@@ -13,6 +13,8 @@ end
 
 
 group :test do
+  gem 'rack'
+  gem 'rack-session'
   gem "minitest", "~> 5.0"
   gem "rack-test"
   gem "simplecov"
