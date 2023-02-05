@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "webauthn/version"
+require_relative "webauthn/strategy_helpers"
 
 module Warden
   module Webauthn
