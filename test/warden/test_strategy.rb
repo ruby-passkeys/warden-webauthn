@@ -182,4 +182,25 @@ class Warden::TestStrategy < Minitest::Test
     assert last_response.ok?
     assert_equal "OK: Tester", last_response.body
   end
+
+  def test_credential_removed
+    authentication_app.create_and_store_credential
+
+    post(build_uri("/step1"))
+    assert last_response.ok?
+
+    challenge_json = JSON.parse(last_response.body)
+    assertion = assertion_from_client(client: authentication_app.client, challenge: challenge_json["challenge"], user_verified: true)
+
+    authentication_app.stored_credential = nil
+
+    assert_raises(NoMethodError) do
+      post(build_uri("/step2"), {credential: JSON.generate(assertion) })
+    end
+
+    get(build_uri("/"))
+
+    assert_equal 500, last_response.status
+    assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/"}', last_response.body
+  end
 end
