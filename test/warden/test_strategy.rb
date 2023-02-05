@@ -86,8 +86,7 @@ class Warden::TestStrategy < Minitest::Test
       use Rack::Session::Cookie, secret: "a" * 64
 
       failure_app = lambda do |env|
-        debugger
-        Rack::Response.new("FAIL: #{env['warden'].errors.to_hash.to_json}", 500).finish
+        Rack::Response.new("FAIL: #{env['warden'].errors.to_hash.to_json} #{env['warden.options']}", 500).finish
       end
 
       Warden::Strategies.add(:webauthn, Warden::WebAuthn::Strategy)
