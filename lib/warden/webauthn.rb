@@ -7,7 +7,5 @@ require_relative "webauthn/authentication_initiation_helpers"
 
 module Warden
   module WebAuthn
-    class Error < StandardError; end
-    # Your code goes here...
   end
 end
