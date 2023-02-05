@@ -73,7 +73,7 @@ module Warden
       end
 
       def parsed_credential
-        if raw_credential.nil? || raw_credential.try(:empty?)
+        if raw_credential.nil? || raw_credential.empty?
           errors.add(:credential, :missing)
           return nil
         end
@@ -82,6 +82,7 @@ module Warden
           return JSON.parse(raw_credential)
         rescue JSON::JSONError
           errors.add(:credential, :json_error)
+          return nil
         end
       end
 
