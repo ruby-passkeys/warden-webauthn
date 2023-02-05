@@ -22,8 +22,9 @@ module Warden
           end
 
           return stored_credential
-        rescue WebAuthn::Error => e
+        rescue ::WebAuthn::Error => e
           fail!(webauthn_error_key(exception: e))
+          return
         end
       end
 
@@ -35,6 +36,10 @@ module Warden
           return :webauthn_public_key_unsupported_algorithm
         when ::WebAuthn::AttestationStatement::UnsupportedAlgorithm
           return :webauthn_attestation_statement_unsupported_algorithm
+        when ::WebAuthn::UserVerifiedVerificationError
+          return :webauthn_user_verified_verification_error
+        when ::WebAuthn::ChallengeVerificationError
+          return :webauthn_challenge_verification_error
         when ::WebAuthn::SignCountVerificationError
           return :webauthn_sign_count_verification_error
         when ::WebAuthn::VerificationError
