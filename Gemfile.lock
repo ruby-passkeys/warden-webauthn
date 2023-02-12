@@ -18,9 +18,6 @@ GEM
       openssl-signature_algorithm (~> 1.0)
     debug (1.7.1)
     docile (1.4.0)
-    io-console (0.6.0)
-    irb (1.6.2)
-      reline (>= 0.3.0)
     json (2.6.3)
     jwt (2.7.0)
     m (1.6.1)
@@ -42,8 +39,6 @@ GEM
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.7.0)
-    reline (0.3.2)
-      io-console (~> 0.5)
     rexml (3.2.5)
     rubocop (1.45.1)
       json (~> 2.3)
@@ -89,14 +84,12 @@ PLATFORMS
 
 DEPENDENCIES
   debug
-  irb
   m
   minitest (~> 5.0)
   rack
   rack-session
   rack-test
   rake (~> 13.0)
-  reline
   rubocop (~> 1.21)
   simplecov
   warden-webauthn!
