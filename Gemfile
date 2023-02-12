@@ -7,6 +7,8 @@ gemspec
 
 group :development, :test do
   gem "debug"
+  gem "irb"
+  gem "reline"
   gem "rake", "~> 13.0"
   gem "rubocop", "~> 1.21"
 end
