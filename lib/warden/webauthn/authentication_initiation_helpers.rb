@@ -2,6 +2,7 @@
 
 module Warden
   module WebAuthn
+    # Helper methods for generating & storing authentication challenges
     module AuthenticationInitiationHelpers
       def generate_authentication_options(relying_party:, options: {})
         relying_party.options_for_authentication(**{

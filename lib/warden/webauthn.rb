@@ -6,7 +6,9 @@ require_relative "webauthn/strategy"
 require_relative "webauthn/authentication_initiation_helpers"
 require_relative "webauthn/registration_helpers"
 
+# rubocop:disable Style/Documentation
 module Warden
   module WebAuthn
   end
 end
+# rubocop:enable Style/Documentation

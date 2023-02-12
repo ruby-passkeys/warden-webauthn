@@ -2,6 +2,7 @@
 
 module Warden
   module WebAuthn
+    # Helper methods to bootstrap registration challenges for implementors
     module RegistrationHelpers
       def generate_registration_options(relying_party:, user_details:, exclude: [], options: {})
         relying_party.options_for_registration(**{

@@ -4,6 +4,7 @@ require "warden"
 
 module Warden
   module WebAuthn
+    # The core strategy for WebAuthn authentication in Warden
     class Strategy < Warden::Strategies::Base
       include Warden::WebAuthn::StrategyHelpers
 

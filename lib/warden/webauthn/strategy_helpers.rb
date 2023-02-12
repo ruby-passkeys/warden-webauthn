@@ -4,6 +4,8 @@ require "webauthn"
 
 module Warden
   module WebAuthn
+    # Helpers that can be mixed in to any WebAuthn-related code, such as custom strategies or
+    # an app's authentication flow
     module StrategyHelpers
       class NoStoredCredentialFound < StandardError; end
 
