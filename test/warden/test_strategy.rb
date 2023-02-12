@@ -122,6 +122,7 @@ class Warden::TestStrategy < Minitest::Test
     assert last_response.ok?
 
     challenge_json = JSON.parse(last_response.body)
+    assert_equal challenge_json["challenge"], last_request.session["current_webauthn_authentication_challenge"]
     assertion = assertion_from_client(client: authentication_app.client, challenge: challenge_json["challenge"], user_verified: true)
 
     post(build_uri("/step2"), {credential: JSON.generate(assertion) })
@@ -143,6 +144,7 @@ class Warden::TestStrategy < Minitest::Test
     assert last_response.ok?
 
     challenge_json = JSON.parse(last_response.body)
+    assert_equal challenge_json["challenge"], last_request.session["current_webauthn_authentication_challenge"]
     assertion = assertion_from_client(client: authentication_app.client, challenge: challenge_json["challenge"], user_verified: false)
 
     post(build_uri("/step2"), {credential: JSON.generate(assertion) })
@@ -163,6 +165,7 @@ class Warden::TestStrategy < Minitest::Test
     post(build_uri("/step1"))
     assert last_response.ok?
 
+    assert_equal JSON.parse(last_response.body)["challenge"], last_request.session["current_webauthn_authentication_challenge"]
     assertion = assertion_from_client(client: authentication_app.client, challenge: encode_challenge, user_verified: true)
 
     post(build_uri("/step2"), {credential: JSON.generate(assertion) })
@@ -193,6 +196,7 @@ class Warden::TestStrategy < Minitest::Test
     assert last_response.ok?
 
     challenge_json = JSON.parse(last_response.body)
+    assert_equal challenge_json["challenge"], last_request.session["current_webauthn_authentication_challenge"]
     assertion = assertion_from_client(client: authentication_app.client, challenge: challenge_json["challenge"], user_verified: true)
 
     authentication_app.stored_credential = nil
@@ -214,12 +218,14 @@ class Warden::TestStrategy < Minitest::Test
 
     post(build_uri("/step1"))
     assert last_response.ok?
+    original_challenge = JSON.parse(last_response.body)["challenge"]
+    assert_equal original_challenge, last_request.session["current_webauthn_authentication_challenge"]
 
     post(build_uri("/step2"))
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {"credential":["missing"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
-    refute_nil last_request.session["current_webauthn_authentication_challenge"]
+    assert_equal original_challenge, last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
@@ -231,13 +237,15 @@ class Warden::TestStrategy < Minitest::Test
     authentication_app.create_and_store_credential
 
     post(build_uri("/step1"))
+    original_challenge = JSON.parse(last_response.body)["challenge"]
+    assert_equal original_challenge, last_request.session["current_webauthn_authentication_challenge"]
     assert last_response.ok?
 
     post(build_uri("/step2"), {credential: "asdasdasd"})
 
     assert_equal 500, last_response.status
     assert_equal 'FAIL: {"credential":["json_error"]} {:action=>"unauthenticated", :message=>nil, :attempted_path=>"/step2"}', last_response.body
-    refute_nil last_request.session["current_webauthn_authentication_challenge"]
+    assert_equal original_challenge, last_request.session["current_webauthn_authentication_challenge"]
 
     get(build_uri("/"))
 
