@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'webauthn'
+
+require "webauthn"
 
 module Warden
   module WebAuthn
@@ -7,54 +8,53 @@ module Warden
       class NoStoredCredentialFound < StandardError; end
 
       def verify_authentication_and_find_stored_credential
-        begin
-          _ , stored_credential = relying_party.verify_authentication(
-            parsed_credential, authentication_challenge, user_verification: true
-          ) do |webauthn_credential|
-            x = credential_finder.find_with_credential_id(Base64.strict_encode64(webauthn_credential.raw_id))
-            raise NoStoredCredentialFound if x.nil?
-            x
-          end
+        _, stored_credential = relying_party.verify_authentication(
+          parsed_credential, authentication_challenge, user_verification: true
+        ) do |webauthn_credential|
+          x = credential_finder.find_with_credential_id(Base64.strict_encode64(webauthn_credential.raw_id))
+          raise NoStoredCredentialFound if x.nil?
 
-          return stored_credential
-        rescue ::WebAuthn::Error => e
-          fail!(webauthn_error_key(exception: e))
-          return
-        rescue NoStoredCredentialFound
-          errors.add(:stored_credential, :not_found)
-          fail!(:stored_credential_not_found)
-          return
-        ensure
-          delete_authentication_challenge
+          x
         end
+
+        stored_credential
+      rescue ::WebAuthn::Error => e
+        fail!(webauthn_error_key(exception: e))
+        nil
+      rescue NoStoredCredentialFound
+        errors.add(:stored_credential, :not_found)
+        fail!(:stored_credential_not_found)
+        nil
+      ensure
+        delete_authentication_challenge
       end
 
       def webauthn_error_key(exception:)
         case exception
         when ::WebAuthn::AttestationStatement::FormatNotSupportedError
-          return :webauthn_attestation_statement_format_not_supported
+          :webauthn_attestation_statement_format_not_supported
         when ::WebAuthn::PublicKey::UnsupportedAlgorithm
-          return :webauthn_public_key_unsupported_algorithm
+          :webauthn_public_key_unsupported_algorithm
         when ::WebAuthn::AttestationStatement::UnsupportedAlgorithm
-          return :webauthn_attestation_statement_unsupported_algorithm
+          :webauthn_attestation_statement_unsupported_algorithm
         when ::WebAuthn::UserVerifiedVerificationError
-          return :webauthn_user_verified_verification_error
+          :webauthn_user_verified_verification_error
         when ::WebAuthn::ChallengeVerificationError
-          return :webauthn_challenge_verification_error
+          :webauthn_challenge_verification_error
         when ::WebAuthn::SignCountVerificationError
-          return :webauthn_sign_count_verification_error
+          :webauthn_sign_count_verification_error
         when ::WebAuthn::VerificationError
-          return :webauthn_verification_error
+          :webauthn_verification_error
         when ::WebAuthn::ClientDataMissingError
-          return :webauthn_client_data_missing
+          :webauthn_client_data_missing
         when ::WebAuthn::AuthenticatorDataFormatError
-          return :webauthn_authenticator_data_format
+          :webauthn_authenticator_data_format
         when ::WebAuthn::AttestedCredentialDataFormatError
-          return :webauthn_attested_credential_data_format
+          :webauthn_attested_credential_data_format
         when ::WebAuthn::RootCertificateFinderNotSupportedError
-          return :webauthn_root_certificate_finder_not_supported
+          :webauthn_root_certificate_finder_not_supported
         when ::WebAuthn::Error
-          return :webauthn_generic_error
+          :webauthn_generic_error
         end
       end
 
@@ -85,27 +85,27 @@ module Warden
         end
 
         begin
-          return JSON.parse(raw_credential)
+          JSON.parse(raw_credential)
         rescue JSON::JSONError
           errors.add(:credential, :json_error)
-          return nil
+          nil
         end
       end
 
       def authentication_challenge_key
-        'current_webauthn_authentication_challenge'
+        "current_webauthn_authentication_challenge"
       end
 
       def credential_finder_key
-        'warden.webauthn.credential_finder'
+        "warden.webauthn.credential_finder"
       end
 
       def relying_party_key
-        'warden.webauthn.relying_party'
+        "warden.webauthn.relying_party"
       end
 
       def raw_credential_key
-        'credential'
+        "credential"
       end
     end
   end

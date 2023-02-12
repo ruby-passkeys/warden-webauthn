@@ -6,17 +6,16 @@ source "https://rubygems.org"
 gemspec
 
 group :development, :test do
+  gem "debug"
   gem "rake", "~> 13.0"
   gem "rubocop", "~> 1.21"
-  gem "debug"
 end
 
-
 group :test do
-  gem 'rack'
-  gem 'rack-session'
+  gem "m"
   gem "minitest", "~> 5.0"
+  gem "rack"
+  gem "rack-session"
   gem "rack-test"
   gem "simplecov"
-  gem "m"
 end
