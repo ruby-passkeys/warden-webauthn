@@ -18,4 +18,5 @@ group :test do
   gem "minitest", "~> 5.0"
   gem "rack-test"
   gem "simplecov"
+  gem "m"
 end
