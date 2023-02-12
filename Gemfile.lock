@@ -17,12 +17,7 @@ GEM
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
     debug (1.7.1)
-      irb (>= 1.5.0)
-      reline (>= 0.3.1)
     docile (1.4.0)
-    io-console (0.6.0)
-    irb (1.6.2)
-      reline (>= 0.3.0)
     json (2.6.3)
     jwt (2.7.0)
     m (1.6.1)
@@ -44,8 +39,6 @@ GEM
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.7.0)
-    reline (0.3.2)
-      io-console (~> 0.5)
     rexml (3.2.5)
     rubocop (1.45.1)
       json (~> 2.3)
@@ -87,6 +80,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-22
 
 DEPENDENCIES
   debug
@@ -101,4 +95,4 @@ DEPENDENCIES
   warden-webauthn!
 
 BUNDLED WITH
-   2.3.8
+   2.4.6
