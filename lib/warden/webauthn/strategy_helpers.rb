@@ -7,6 +7,7 @@ module Warden
     module StrategyHelpers
       class NoStoredCredentialFound < StandardError; end
 
+      # rubocop:disable Metrics/MethodLength
       def verify_authentication_and_find_stored_credential
         _, stored_credential = relying_party.verify_authentication(
           parsed_credential, authentication_challenge, user_verification: true
@@ -28,7 +29,10 @@ module Warden
       ensure
         delete_authentication_challenge
       end
+      # rubocop:enable Metrics/MethodLength
 
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/MethodLength
       def webauthn_error_key(exception:)
         case exception
         when ::WebAuthn::AttestationStatement::FormatNotSupportedError
@@ -57,6 +61,8 @@ module Warden
           :webauthn_generic_error
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/MethodLength
 
       def relying_party
         env[relying_party_key]
