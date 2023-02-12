@@ -1,13 +1,72 @@
 version: 2.1
 jobs:
-  build:
+  "ruby-3-2":
     docker:
-      - image: ruby:3.1.1
+      - image: cimg/ruby:3.2
     steps:
       - checkout
       - run:
           name: Run the default task
           command: |
-            gem install bundler -v 2.3.8
+            gem install bundle
             bundle install
             bundle exec rake
+
+  "ruby-3-1":
+    docker:
+      - image: cimg/ruby:3.1
+    steps:
+      - checkout
+      - run:
+          name: Run the default task
+          command: |
+            gem install bundler
+            bundle install
+            bundle exec rake
+
+  "ruby-3-0":
+    docker:
+      - image: ruby:3.0
+    steps:
+      - checkout
+      - run:
+          name: Run the default task
+          command: |
+            gem install bundler
+            bundle install
+            bundle exec rake
+
+  "ruby-2-7":
+    docker:
+      - image: ruby:2.7
+    steps:
+      - checkout
+      - run:
+          name: Run the default task
+          command: |
+            gem install bundler
+            bundle install
+            bundle exec rake
+
+  "ruby-2-6":
+    docker:
+      - image: ruby:2.6
+    steps:
+      - checkout
+      - run:
+          name: Run the default task
+          command: |
+            gem install bundler
+            bundle install
+            bundle exec rake
+
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "ruby-3-2"
+      - "ruby-3-1"
+      - "ruby-3-0"
+      - "ruby-2-6"
+      - "ruby-2-7"
