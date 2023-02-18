@@ -42,7 +42,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_nil options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout
@@ -103,7 +103,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_equal relying_party_id, options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout
@@ -130,7 +130,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_equal relying_party_id, options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout
@@ -194,7 +194,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_nil options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout
@@ -255,7 +255,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_equal relying_party_id, options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout
@@ -282,7 +282,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
     assert_empty options_for_registration.exclude
     assert_empty options_for_registration.exclude_credentials
-    assert_nil options_for_registration.extensions
+    assert_equal ({}), options_for_registration.extensions
     assert_equal relying_party_id, options_for_registration.rp.id
 
     assert_equal 120_000, options_for_registration.timeout

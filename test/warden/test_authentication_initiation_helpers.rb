@@ -40,7 +40,7 @@ class Warden::TestAuthenticationInitiationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_nil options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
@@ -84,7 +84,7 @@ class Warden::TestAuthenticationInitiationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_equal relying_party_id, options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
@@ -102,7 +102,7 @@ class Warden::TestAuthenticationInitiationHelpers < Minitest::Test
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_equal relying_party_id, options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
@@ -158,7 +158,7 @@ class Warden::TestAuthenticationInitiationHelpersCustomChallengeKey < Minitest::
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_nil options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
@@ -202,7 +202,7 @@ class Warden::TestAuthenticationInitiationHelpersCustomChallengeKey < Minitest::
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_equal relying_party_id, options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
@@ -220,7 +220,7 @@ class Warden::TestAuthenticationInitiationHelpersCustomChallengeKey < Minitest::
     assert_kind_of WebAuthn::PublicKeyCredential::RequestOptions, options_for_authentication
     assert_nil options_for_authentication.allow
     assert_empty options_for_authentication.allow_credentials
-    assert_nil options_for_authentication.extensions
+    assert_equal ({}), options_for_authentication.extensions
     assert_equal relying_party_id, options_for_authentication.rp_id
 
     assert_equal 120_000, options_for_authentication.timeout
