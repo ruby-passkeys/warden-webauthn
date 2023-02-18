@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "webauthn/version"
+require_relative "webauthn/error_key_finder"
 require_relative "webauthn/strategy_helpers"
 require_relative "webauthn/strategy"
 require_relative "webauthn/authentication_initiation_helpers"
