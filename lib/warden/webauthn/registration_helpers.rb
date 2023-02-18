@@ -16,7 +16,7 @@ module Warden
         session[registration_challenge_key] = options_for_registration.challenge
       end
 
-      def verify_registration(relying_party:, parsed_credential:)
+      def verify_registration(relying_party:)
         relying_party.verify_registration(
           parsed_credential, registration_challenge, user_verification: true
         )
