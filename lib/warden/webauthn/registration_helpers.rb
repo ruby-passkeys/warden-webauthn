@@ -16,6 +16,34 @@ module Warden
         session[registration_challenge_key] = options_for_registration.challenge
       end
 
+      def verify_registration(relying_party:, parsed_credential:)
+        relying_party.verify_registration(
+          parsed_credential, registration_challenge, user_verification: true
+        )
+      ensure
+        delete_registration_challenge
+      end
+
+      def registration_challenge
+        session[registration_challenge_key]
+      end
+
+      def delete_registration_challenge
+        session.delete(registration_challenge_key)
+      end
+
+      def parsed_credential
+        JSON.parse(raw_credential)
+      end
+
+      def raw_credential
+        params[raw_credential_key]
+      end
+
+      def raw_credential_key
+        "credential"
+      end
+
       def registration_challenge_key
         "current_webauthn_registration_challenge"
       end
