@@ -8,7 +8,11 @@ module WebAuthnTestHelpers
     }.merge(options))
   end
 
-  def fake_client(origin: "https://example.test")
+  def fake_authenticator
+    return WebAuthn::FakeAuthenticator.new
+  end
+
+  def fake_client(origin: "https://example.test", authenticator: WebAuthn::FakeAuthenticator.new)
     return WebAuthn::FakeClient.new(origin)
   end
 
