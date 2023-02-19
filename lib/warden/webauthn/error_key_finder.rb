@@ -16,6 +16,8 @@ module Warden
           :webauthn_attestation_statement_unsupported_algorithm
         when ::WebAuthn::UserVerifiedVerificationError
           :webauthn_user_verified_verification_error
+        when ::WebAuthn::OriginVerificationError
+          :webauthn_origin_verification_error
         when ::WebAuthn::ChallengeVerificationError
           :webauthn_challenge_verification_error
         when ::WebAuthn::SignCountVerificationError

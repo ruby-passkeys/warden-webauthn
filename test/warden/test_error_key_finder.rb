@@ -10,6 +10,7 @@ class Warden::TestErrorKeyFinder < Minitest::Test
       {error_class: WebAuthn::PublicKey::UnsupportedAlgorithm, error_key: :webauthn_public_key_unsupported_algorithm},
       {error_class: WebAuthn::AttestationStatement::UnsupportedAlgorithm, error_key: :webauthn_attestation_statement_unsupported_algorithm},
       {error_class: WebAuthn::UserVerifiedVerificationError, error_key: :webauthn_user_verified_verification_error},
+      {error_class: WebAuthn::OriginVerificationError, error_key: :webauthn_origin_verification_error},
       {error_class: WebAuthn::ChallengeVerificationError, error_key: :webauthn_challenge_verification_error},
       {error_class: WebAuthn::VerificationError, error_key: :webauthn_verification_error},
       {error_class: WebAuthn::ClientDataMissingError, error_key: :webauthn_client_data_missing},
