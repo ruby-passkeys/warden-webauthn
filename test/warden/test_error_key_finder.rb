@@ -29,4 +29,10 @@ class Warden::TestErrorKeyFinder < Minitest::Test
       assert_equal error_key, Warden::WebAuthn::ErrorKeyFinder.webauthn_error_key(exception: exception_instance), error_class
     end
   end
+
+  def test_runtime_error_if_given_unknown_exception
+    assert_raises RuntimeError do
+      Warden::WebAuthn::ErrorKeyFinder.webauthn_error_key(exception: JSON::ParserError.new)
+    end
+  end
 end
