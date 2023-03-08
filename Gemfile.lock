@@ -36,7 +36,7 @@ GEM
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
-    rack (3.0.4.1)
+    rack (3.0.4.2)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.0.2)
@@ -88,6 +88,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   debug
