@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Warden
   module WebAuthn
     # Helpers that can be mixed in to any Rack middleware or application, in order
