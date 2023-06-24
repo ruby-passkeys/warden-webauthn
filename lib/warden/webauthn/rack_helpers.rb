@@ -8,6 +8,10 @@ module Warden
       def relying_party_key
         "warden.webauthn.relying_party"
       end
+
+      def set_relying_party_in_request_env
+        request.env[relying_party_key] = relying_party
+      end
     end
   end
 end
