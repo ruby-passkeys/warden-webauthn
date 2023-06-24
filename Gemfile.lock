@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    warden-webauthn (0.2.0)
+    warden-webauthn (0.2.1)
       warden
       webauthn (>= 3)
 
