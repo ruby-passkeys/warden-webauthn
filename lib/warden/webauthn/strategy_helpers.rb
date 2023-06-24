@@ -7,6 +7,7 @@ module Warden
     # Helpers that can be mixed in to any WebAuthn-related code, such as custom strategies or
     # an app's authentication flow
     module StrategyHelpers
+      prepend RackHelpers
       class NoStoredCredentialFound < StandardError; end
 
       # rubocop:disable Metrics/MethodLength
