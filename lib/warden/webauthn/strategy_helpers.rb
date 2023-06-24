@@ -76,10 +76,6 @@ module Warden
         "warden.webauthn.credential_finder"
       end
 
-      def relying_party_key
-        "warden.webauthn.relying_party"
-      end
-
       def raw_credential_key
         "credential"
       end
