@@ -49,7 +49,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_equal 120_000, options_for_registration.timeout
     assert_equal relying_party, options_for_registration.relying_party
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -83,7 +83,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_equal extensions, options_for_registration.extensions
     assert_equal expected_exclude_credentials, options_for_registration.exclude_credentials
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -110,7 +110,7 @@ class Warden::TestRegistrationHelpers < Minitest::Test
     assert_equal 120_000, options_for_registration.timeout
     assert_equal relying_party, options_for_registration.relying_party
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -297,6 +297,10 @@ class Warden::TestRegistrationHelpers < Minitest::Test
 
     assert_equal challenge, @test_class.registration_challenge
   end
+
+  def test_authenticator_selection_options
+    assert_equal ({ resident_key: "required", user_verification: "required" }), @test_class.authenticator_selection_options
+  end
 end
 
 class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
@@ -353,7 +357,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_equal 120_000, options_for_registration.timeout
     assert_equal relying_party, options_for_registration.relying_party
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -387,7 +391,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_equal extensions, options_for_registration.extensions
     assert_equal expected_exclude_credentials, options_for_registration.exclude_credentials
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -414,7 +418,7 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     assert_equal 120_000, options_for_registration.timeout
     assert_equal relying_party, options_for_registration.relying_party
 
-    assert_equal ({user_verification: "required"}), options_for_registration.authenticator_selection
+    assert_equal ({ resident_key: "required", user_verification: "required" }), options_for_registration.authenticator_selection
 
     assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
 
@@ -599,5 +603,56 @@ class Warden::TestRegistrationHelpersCustomChallengeKey < Minitest::Test
     @test_class.session["custom_key"] = challenge
 
     assert_equal challenge, @test_class.registration_challenge
+  end
+end
+
+class Warden::TestRegistrationHelpersCustomAuthenticatorSelection < Minitest::Test
+  include WebAuthnTestHelpers
+
+  class TestClass
+    include Warden::WebAuthn::RegistrationHelpers
+
+    attr_accessor :session, :params
+
+    def initialize
+      self.session = {}
+      self.params = {}
+    end
+
+    def authenticator_selection_options
+      { resident_key: "preferred", user_verification: "preferred" }
+    end
+  end
+
+  def setup
+    @test_class = TestClass.new
+  end
+
+  def test_authenticator_selection_options
+    assert_equal ({ resident_key: "preferred", user_verification: "preferred" }), @test_class.authenticator_selection_options
+  end
+
+  def test_generate_registration_options
+    relying_party = example_relying_party
+    user_details = {name: "Test User", id: WebAuthn.generate_user_id}
+    options_for_registration = @test_class.generate_registration_options(relying_party: relying_party, user_details: user_details)
+
+    assert_kind_of WebAuthn::PublicKeyCredential::CreationOptions, options_for_registration
+    assert_empty options_for_registration.exclude
+    assert_empty options_for_registration.exclude_credentials
+    assert_equal ({}), options_for_registration.extensions
+    assert_nil options_for_registration.rp.id
+
+    assert_equal 120_000, options_for_registration.timeout
+    assert_equal relying_party, options_for_registration.relying_party
+
+    assert_equal ({ resident_key: "preferred", user_verification: "preferred" }), options_for_registration.authenticator_selection
+
+    assert_kind_of WebAuthn::PublicKeyCredential::UserEntity, options_for_registration.user
+
+    assert_equal "Test User", options_for_registration.user.name
+    assert_equal "Test User", options_for_registration.user.display_name
+    refute_nil options_for_registration.user.id
+    refute_nil options_for_registration.challenge
   end
 end
