@@ -8,7 +8,7 @@ module Warden
         relying_party.options_for_registration(**{
           user: user_details,
           exclude: exclude,
-          authenticator_selection: { user_verification: "required" }
+          authenticator_selection: authenticator_selection_options
         }.merge(options))
       end
 
@@ -46,6 +46,10 @@ module Warden
 
       def registration_challenge_key
         "current_webauthn_registration_challenge"
+      end
+
+      def authenticator_selection_options
+        { resident_key: "required", user_verification: "required" }
       end
     end
   end
